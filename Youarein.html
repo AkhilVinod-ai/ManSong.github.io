@@ -4,67 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Text</title>
+    <title>Logout - Song Request System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
     <style>
-        body {
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            position: relative;
-            background-color: black;
-            color: white;
-        }
-
-        .animated-text {
-            position: absolute;
-            font-size: 24px;
-            font-family: Arial, sans-serif;
-            white-space: nowrap;
+        .purple-gradient {
+            background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
         }
     </style>
 </head>
 
-<body>
+<body class="bg-purple-50 min-h-screen">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="text-2xl font-bold text-purple-600">SongRequest</a>
+                <button onclick="logout()"
+                    class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">Logout</button>
+            </div>
+        </div>
+    </nav>
     <script>
-        // Function to create and animate text
-        function createMovingText(text) {
-            const textElement = document.createElement('div');
-            textElement.textContent = text;
-            textElement.className = 'animated-text';
-            document.body.appendChild(textElement);
+        // Your web app's Firebase configuration (replace with your own)
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "your-auth-domain",
+            projectId: "your-project-id",
+            storageBucket: "your-storage-bucket",
+            messagingSenderId: "your-messaging-sender-id",
+            appId: "your-app-id"
+        };
 
-            // Initial random position and speed
-            let x = Math.random() * window.innerWidth;
-            let y = Math.random() * window.innerHeight;
-            const dx = (Math.random() - 0.5) * 4;
-            const dy = (Math.random() - 0.5) * 4;
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-            function move() {
-                // Update position
-                x += dx;
-                y += dy;
-
-                // Reflect from edges
-                if (x < 0 || x > window.innerWidth - textElement.offsetWidth) {
-                    x -= dx;
-                }
-                if (y < 0 || y > window.innerHeight - textElement.offsetHeight) {
-                    y -= dy;
-                }
-
-                // Apply position
-                textElement.style.left = x + 'px';
-                textElement.style.top = y + 'px';
-
-                requestAnimationFrame(move);
-            }
-
-            move();
-        }
-
-        // Create multiple moving texts
-        for (let i = 0; i < 10; i++) {
-            createMovingText('Fuck you');
+        function logout() {
+            auth.signOut().then(() => {
+                console.log('Logged out successfully');
+                window.location.href = 'login.html'; // Redirect to login page after logout
+            }).catch((error) => {
+                console.error('Logout Error', error);
+                alert('Failed to log out.');
+            });
         }
     </script>
 </body>
