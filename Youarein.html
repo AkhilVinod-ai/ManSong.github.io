@@ -20,36 +20,38 @@
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <a href="index.html" class="text-2xl font-bold text-purple-600">SongRequest</a>
-                <button onclick="logout()"
+                <button id="logoutButton"
                     class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">Logout</button>
             </div>
         </div>
-    </nav>  
+    </nav>
+
     <script type="module">
-    
-            const firebaseConfig = {
-                apiKey: "AIzaSyC3Yk3rQDeZlKTovkcZrVCRpRuDzsRR6dI",
-                authDomain: "mansong-434fc.firebaseapp.com",
-                projectId: "mansong-434fc",
-                storageBucket: "mansong-434fc.firebasestorage.app",
-                messagingSenderId: "536985439308",
-                appId: "1:536985439308:web:b5d0653c996c4a2d48b8e9",
-                measurementId: "G-FQFZ0DGG90"
-            };
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+        import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3Yk3rQDeZlKTovkcZrVCRpRuDzsRR6dI",
+            authDomain: "mansong-434fc.firebaseapp.com",
+            projectId: "mansong-434fc",
+            storageBucket: "mansong-434fc.firebasestorage.app",
+            messagingSenderId: "536985439308",
+            appId: "1:536985439308:web:b5d0653c996c4a2d48b8e9",
+            measurementId: "G-FQFZ0DGG90"
+        };
 
-        function logout() {
-            auth.signOut().then(() => {
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            signOut(auth).then(() => {
                 console.log('Logged out successfully');
                 window.location.href = 'login.html'; // Redirect to login page after logout
             }).catch((error) => {
                 console.error('Logout Error', error);
                 alert('Failed to log out.');
             });
-        }
+        });
     </script>
 </body>
 
