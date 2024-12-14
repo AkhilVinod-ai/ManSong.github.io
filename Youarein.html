@@ -25,16 +25,21 @@
             </div>
         </div>
     </nav>
-    <script>
+    
         // Your web app's Firebase configuration (replace with your own)
-        const firebaseConfig = {
-            apiKey: "your-api-key",
-            authDomain: "your-auth-domain",
-            projectId: "your-project-id",
-            storageBucket: "your-storage-bucket",
-            messagingSenderId: "your-messaging-sender-id",
-            appId: "your-app-id"
-        };
+    <script type="module">
+                import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+                import {getAuth, createUserWithEmailAndPassword} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
+
+                const firebaseConfig = {
+                    apiKey: "AIzaSyC3Yk3rQDeZlKTovkcZrVCRpRuDzsRR6dI",
+                authDomain: "mansong-434fc.firebaseapp.com",
+                projectId: "mansong-434fc",
+                storageBucket: "mansong-434fc.firebasestorage.app",
+                messagingSenderId: "536985439308",
+                appId: "1:536985439308:web:b5d0653c996c4a2d48b8e9",
+                measurementId: "G-FQFZ0DGG90"
+            };
 
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
