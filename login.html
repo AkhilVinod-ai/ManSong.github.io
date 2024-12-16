@@ -148,7 +148,7 @@
             try {
                 const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
                 // Successful login
-                window.location.href = 'Youarein.html'; // Redirect to home page
+                window.location.href = 'submit.html'; // Redirect to home page
             } catch (error) {
                 // Show error message
                 errorMessage.textContent = error.message;
@@ -160,7 +160,7 @@
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 // User is signed in, redirect to home page
-                window.location.href = 'Youarein.html';
+                window.location.href = 'submit.html';
             }
         });
     </script>
