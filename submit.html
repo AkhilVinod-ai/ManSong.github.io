@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Performance Details</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
@@ -20,11 +20,13 @@
             border-color: #8B5CF6;
             box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
         }
+        button {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body class="bg-purple-50 min-h-screen flex flex-col">
 
-    <!-- Navigation -->
     <nav class="bg-white shadow-lg">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
@@ -34,109 +36,50 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="flex-grow px-4 py-12 max-w-6xl mx-auto">
-
-        <!-- Form Section -->
-        <div id="formSection" class="bg-white rounded-lg shadow-xl p-8 w-full max-w-xl mx-auto mb-8">
+    <div class="flex-grow flex items-center justify-center px-4 py-12">
+        <form id="requestForm" class="bg-white rounded-lg shadow-xl p-8 w-full max-w-lg">
             <h2 class="text-3xl font-bold text-gray-800 mb-4">Submit Performance Details</h2>
 
-            <form id="requestForm">
-                <input type="text" id="performanceName" placeholder="Performance Name" class="form-input block w-full mt-1" required>
-                <input type="time" id="timeOfPerformance" class="form-input block w-full mt-1" required>
-                <input type="number" id="totalMinutes" placeholder="Total Minutes of Performance" class="form-input block w-full mt-1" required>
-                <input type="text" id="groupName" placeholder="Group Name" class="form-input block w-full mt-1" required>
-
-                <div id="participantsContainer" class="mt-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Participants</label>
-                    <div id="participantWrapper">
-                        <input type="text" name="participant0" id="participant0" class="form-input block w-full mt-1 mb-2" required placeholder="Participant Name">
-                    </div>
-                    <div class="flex space-x-2">
-                        <button type="button" id="addParticipant" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 text-sm">Add Participant</button>
-                        <button type="button" id="removeParticipant" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm">Remove Participant</button>
-                    </div>
+            <input type="text" id="performanceName" placeholder="Performance Name" class="form-input block w-full mt-1" required>
+            <input type="time" id="timeOfPerformance" placeholder="Time of Performance" class="form-input block w-full mt-1" required>
+            <input type="number" id="totalMinutes" placeholder="Total Minutes of Performance" class="form-input block w-full mt-1" required>
+            <input type="text" id="groupName" placeholder="Group Name" class="form-input block w-full mt-1" required>
+            
+            <div id="participantsContainer">
+                <label class="block text-sm font-medium text-gray-700">Participants</label>
+                <div id="participantWrapper">
+                    <input type="text" name="participant0" id="participant0" class="form-input block w-full mt-1 mb-2" required>
                 </div>
-
-                <input type="url" id="musicLink" placeholder="Music Link (YouTube)" class="form-input block w-full mt-4" required>
-
-                <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-lg shadow hover:bg-purple-700 w-full mt-4">Submit Request</button>
-            </form>
-        </div>
-
-        <!-- Success Section -->
-        <div id="successSection" class="hidden bg-green-50 rounded-lg shadow-xl p-8 w-full max-w-md mx-auto text-center">
-            <div class="inline-block p-3 rounded-full bg-green-100 mb-4">
-                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 11l3 3L22 4M2 12l7 7 3-3"/>
-                </svg>
+                <button type="button" id="addParticipant" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Add Participant</button>
+                <button type="button" id="removeParticipant" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 mt-2">Remove Participant</button>
             </div>
-            <h2 class="text-3xl font-bold text-green-600 mb-4">Request Submitted Successfully!</h2>
-            <p class="text-gray-700 mb-6">
-                Your song request has been added to the playlist. You can view the updated playlist below or continue making more requests.
-            </p>
-            <div class="flex space-x-4 justify-center">
-                <button id="viewPlaylistBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">View Playlist</button>
-                <button id="anotherRequestBtn" class="border-2 border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-100">Make Another Request</button>
-            </div>
-        </div>
 
-        <!-- Current Playlist Section -->
-        <div id="playlistSection" class="hidden mt-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
-                <svg class="w-6 h-6 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 19V6h2l-2-2-2 2h2v13zM15 19V8h2L15 6l-2 2h2v11zM3 5h18M3 10h18M3 15h18"/>
-                </svg>
-                Current Playlist
-            </h2>
-            <p id="songCount" class="text-gray-600 mb-4"></p>
-            <div id="playlistContainer" class="space-y-4"></div>
-        </div>
+            <input type="url" id="musicLink" placeholder="Music Link (YouTube)" class="form-input block w-full mt-1" required>
+
+            <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-lg shadow hover:bg-purple-700 w-full">Submit Request</button>
+        </form>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t py-4 mt-auto">
+    <footer class="bg-white border-t py-4">
         <div class="max-w-6xl mx-auto px-4 text-center text-gray-600 text-sm">
             © 2024 Song Request System. All rights reserved.
         </div>
     </footer>
 
     <script>
-        // Initialize Firebase (replace with your own config)
+        // Initialize Firebase
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
             projectId: "YOUR_PROJECT_ID",
             storageBucket: "YOUR_PROJECT_ID.appspot.com",
             messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            appId: "YOUR_APP_ID",
+            measurementId: "YOUR_MEASUREMENT_ID"
         };
         firebase.initializeApp(firebaseConfig);
-
-        const auth = firebase.auth();
         const db = firebase.firestore();
 
-        const formSection = document.getElementById('formSection');
-        const successSection = document.getElementById('successSection');
-        const anotherRequestBtn = document.getElementById('anotherRequestBtn');
-        const viewPlaylistBtn = document.getElementById('viewPlaylistBtn');
-        const playlistSection = document.getElementById('playlistSection');
-        const playlistContainer = document.getElementById('playlistContainer');
-        const songCount = document.getElementById('songCount');
-        
-        // Check if user is logged in
-        auth.onAuthStateChanged(user => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                // If logged in, load the playlist
-                loadPlaylist();
-            }
-        });
-
-        // Participants handling
         const addParticipantBtn = document.getElementById('addParticipant');
         const removeParticipantBtn = document.getElementById('removeParticipant');
         const participantWrapper = document.getElementById('participantWrapper');
@@ -148,10 +91,10 @@
                 newInput.type = 'text';
                 newInput.name = `participant${participantCount}`;
                 newInput.id = `participant${participantCount}`;
-                newInput.placeholder = `Participant Name`;
                 newInput.className = 'form-input block w-full mt-1 mb-2';
                 participantWrapper.appendChild(newInput);
                 participantCount++;
+                console.log(`Added participant ${participantCount}`);
             } else {
                 alert('Maximum of 10 participants allowed.');
             }
@@ -161,144 +104,21 @@
             if (participantCount > 1) {
                 participantWrapper.removeChild(participantWrapper.lastChild);
                 participantCount--;
+                console.log(`Removed participant ${participantCount}`);
             }
         });
 
-        document.getElementById('requestForm').addEventListener('submit', async (e) => {
+        document.getElementById('requestForm').addEventListener('submit', (e) => {
             e.preventDefault();
-
-            const user = auth.currentUser;
-            if (!user) {
-                return window.location.href = 'login.html';
-            }
-
-            const performanceName = document.getElementById('performanceName').value.trim();
-            const timeOfPerformance = document.getElementById('timeOfPerformance').value;
-            const totalMinutes = document.getElementById('totalMinutes').value.trim();
-            const groupName = document.getElementById('groupName').value.trim();
-            const musicLink = document.getElementById('musicLink').value.trim();
-
-            // Gather participants
-            const participants = [];
-            for (let i = 0; i < participantCount; i++) {
-                const p = document.getElementById(`participant${i}`).value.trim();
-                if (p) participants.push(p);
-            }
-
-            try {
-                // Add the request to Firestore
-                await db.collection('requests').add({
-                    userId: user.uid,
-                    performanceName: performanceName,
-                    timeOfPerformance: timeOfPerformance,
-                    totalMinutes: parseInt(totalMinutes),
-                    groupName: groupName,
-                    participants: participants,
-                    link: musicLink,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                // Show success message
-                formSection.classList.add('hidden');
-                successSection.classList.remove('hidden');
-
-                // Update the playlist after adding a new request
-                loadPlaylist();
-            } catch (error) {
-                console.error('Error submitting request:', error);
-                alert('There was an error submitting your request. Please try again.');
-            }
+            // Collect data and perform the submission...
+            console.log("Form submitted");
         });
 
-        // Load the current playlist from Firestore
-        async function loadPlaylist() {
-            const snapshot = await db.collection('requests').orderBy('timestamp', 'desc').get();
-            playlistContainer.innerHTML = '';
-            const docs = snapshot.docs;
-
-            if (docs.length > 0) {
-                playlistSection.classList.remove('hidden');
-                songCount.textContent = `${docs.length} Song${docs.length > 1 ? 's' : ''}`;
-            } else {
-                playlistSection.classList.remove('hidden');
-                songCount.textContent = 'No songs have been requested yet.';
-            }
-
-            docs.forEach(doc => {
-                const data = doc.data();
-                const item = document.createElement('div');
-                item.className = 'bg-white rounded-lg p-4 flex justify-between items-center shadow';
-
-                const infoDiv = document.createElement('div');
-                const title = document.createElement('h3');
-                title.className = 'font-bold text-purple-700 text-lg';
-                title.textContent = data.performanceName || 'Unknown Title';
-
-                const details = document.createElement('p');
-                details.className = 'text-gray-600 text-sm';
-                details.textContent = data.groupName ? `${data.groupName}` : '';
-
-                const requested = document.createElement('p');
-                requested.className = 'text-sm text-gray-500';
-                const partList = data.participants && data.participants.length ? data.participants.join(', ') : 'Unknown Participants';
-                requested.textContent = `Participants: ${partList}`;
-
-                infoDiv.appendChild(title);
-                if (details.textContent.trim()) infoDiv.appendChild(details);
-                infoDiv.appendChild(requested);
-
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'text-red-500 hover:text-red-600';
-                deleteBtn.innerHTML = `
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4
-                            a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                `;
-                // Add delete functionality if desired
-                deleteBtn.addEventListener('click', async () => {
-                    if (confirm('Are you sure you want to delete this request?')) {
-                        await db.collection('requests').doc(doc.id).delete();
-                        loadPlaylist();
-                    }
-                });
-
-                item.appendChild(infoDiv);
-                item.appendChild(deleteBtn);
-                playlistContainer.appendChild(item);
-            });
-        }
-
-        // "Make Another Request" button
-        anotherRequestBtn.addEventListener('click', () => {
-            // Reset the form
-            document.getElementById('requestForm').reset();
-            participantWrapper.innerHTML = '';
-            participantCount = 1;
-            const initialInput = document.createElement('input');
-            initialInput.type = 'text';
-            initialInput.name = 'participant0';
-            initialInput.id = 'participant0';
-            initialInput.placeholder = 'Participant Name';
-            initialInput.className = 'form-input block w-full mt-1 mb-2';
-            participantWrapper.appendChild(initialInput);
-
-            successSection.classList.add('hidden');
-            formSection.classList.remove('hidden');
-        });
-
-        // "View Playlist" button
-        viewPlaylistBtn.addEventListener('click', () => {
-            // Just scroll to playlist section
-            playlistSection.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // Logout button
         document.getElementById('logoutBtn').addEventListener('click', async () => {
             try {
                 await firebase.auth().signOut();
                 window.location.href = 'index.html';
+                console.log("Logged out");
             } catch (error) {
                 console.error('Logout Error', error);
             }
